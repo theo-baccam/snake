@@ -22,11 +22,11 @@ border_left = pygame.Rect((0, 32), (32, 448))
 
 border_list = [border_top, border_right, border_bottom, border_left]
 
-player_x, player_y = (
+snake_head_x, snake_head_y = (
     320,
     224,
 )
-player = pygame.Rect((player_x, player_y), (32, 32))
+snake_head = pygame.Rect((snake_head_x, snake_head_y), (32, 32))
 
 apple_x, apple_y = (
     64,
@@ -36,7 +36,7 @@ apple = pygame.Rect((apple_x, apple_y), (32, 32))
 
 
 def move(increment_x, increment_y):
-    return player.move(increment_x, increment_y)
+    return snake_head.move(increment_x, increment_y)
 
 
 movement_keys = {
@@ -62,22 +62,35 @@ def draw_border(screen, FOREGROUND, border_list):
         pygame.draw.rect(screen, FOREGROUND, border)
 
 
-def border_collision(player, border_list):
+def border_collision(snake_head, border_list):
     for border in border_list:
-        if player.colliderect(border):
+        if snake_head.colliderect(border):
             return True
 
 
-def apple_collision(player, apple):
-    if player.colliderect(apple):
+def apple_collision(snake_head, apple):
+    if snake_head.colliderect(apple):
         return 1
     else:
         return 0
 
 
+def calculate_snake_positions(snake_positions, snake_length, snake_head):
+    if len(snake_positions) == snake_length:
+        snake_positions.pop(0)
+    snake_positions.append((snake_head[0], snake_head[1]))
+
+
+def render_snake(snake_positions, screen, FOREGROUND):
+    for i in snake_positions:
+        snake_cell = pygame.Rect((i), (32, 32))
+        pygame.draw.rect(screen, FOREGROUND, snake_cell)
+
+
 direction = "right"
 new_direction = ""
-snake_length = 1
+snake_length = 3
+snake_positions = []
 
 while running:
     screen.fill(BACKGROUND)
@@ -96,13 +109,16 @@ while running:
             new_direction = key_name
         if not is_opposite_direction(direction, new_direction):
             direction = new_direction
-    player = movement_keys[direction]()
-    pygame.draw.rect(screen, FOREGROUND, player)
+    snake_head = movement_keys[direction]()
 
-    if border_collision(player, border_list):
+    if border_collision(snake_head, border_list):
         running = False
 
-    snake_length += apple_collision(player, apple)
+    snake_length += apple_collision(snake_head, apple)
+
+    calculate_snake_positions(snake_positions, snake_length, snake_head)
+
+    render_snake(snake_positions, screen, FOREGROUND)
 
     pygame.display.flip()
     clock.tick(MAX_FPS)
