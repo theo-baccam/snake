@@ -28,7 +28,7 @@ def calculate_grid():
     return grid_coordinate
 
 
-def choose_random_coordinate(grid_coordinate, snake_positions):
+def choose_random_coordinate(grid_coordinate, snake_cell_positions):
     while True:
         random_coordinate = choice(list(grid_coordinate.values()))
         if (
@@ -38,7 +38,7 @@ def choose_random_coordinate(grid_coordinate, snake_positions):
             (random_coordinate[1] == 448)
         ):
             continue
-        elif random_coordinate in snake_positions:
+        elif random_coordinate in snake_cell_positions:
             continue
         return random_coordinate
 
@@ -80,15 +80,20 @@ def apple_collision(snake_head, apple):
     if snake_head.colliderect(apple):
         return True
 
+def body_collision(snake_cell_positions):
+    for cell in snake_cell_positions[:-1]:
+        if cell == snake_cell_positions[-1]:
+            return True
 
-def calculate_snake_positions(snake_positions, snake_length, snake_head):
-    if len(snake_positions) == snake_length:
-        snake_positions.pop(0)
-    snake_positions.append((snake_head[0], snake_head[1]))
+
+def calculate_snake_cell_positions(snake_cell_positions, snake_length, snake_head):
+    if len(snake_cell_positions) == snake_length:
+        snake_cell_positions.pop(0)
+    snake_cell_positions.append((snake_head[0], snake_head[1]))
 
 
-def render_snake(snake_positions, screen, FOREGROUND):
-    for i in snake_positions:
+def render_snake(snake_cell_positions, screen, FOREGROUND):
+    for i in snake_cell_positions:
         snake_cell = pygame.Rect((i), (32, 32))
         pygame.draw.rect(screen, FOREGROUND, snake_cell)
 
@@ -108,9 +113,9 @@ snake_head = pygame.Rect((snake_head_x, snake_head_y), (32, 32))
 direction = "right"
 new_direction = ""
 snake_length = 3
-snake_positions = []
+snake_cell_positions = []
 
-random_coordinate = choose_random_coordinate(grid_coordinate, snake_positions)
+random_coordinate = choose_random_coordinate(grid_coordinate, snake_cell_positions)
 apple_x, apple_y = random_coordinate
 apple = pygame.Rect((apple_x, apple_y), (32, 32))
 
@@ -127,17 +132,21 @@ while running:
             direction = new_direction
 
     snake_head = movement_keys[direction]()
-    calculate_snake_positions(snake_positions, snake_length, snake_head)
+    calculate_snake_cell_positions(snake_cell_positions, snake_length, snake_head)
+
+    if body_collision(snake_cell_positions):
+        running = False
+        break
 
     if apple_collision(snake_head, apple):
         snake_length += 1
-        apple[0], apple[1] = choose_random_coordinate(grid_coordinate, snake_positions)
+        apple[0], apple[1] = choose_random_coordinate(grid_coordinate, snake_cell_positions)
 
     screen.fill(BACKGROUND)
 
     draw_border(screen, FOREGROUND, border_list)
     pygame.draw.rect(screen, FOREGROUND, apple)
-    render_snake(snake_positions, screen, FOREGROUND)
+    render_snake(snake_cell_positions, screen, FOREGROUND)
 
     if border_collision(snake_head, border_list):
         running = False
