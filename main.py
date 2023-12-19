@@ -15,31 +15,12 @@ clock = pygame.time.Clock()
 MAX_FPS = 3
 running = True
 
+border_top = pygame.Rect((0, 0), (608, 32))
+border_right = pygame.Rect((608, 0), (32, 448))
+border_bottom = pygame.Rect((32, 448), (608, 32))
+border_left = pygame.Rect((0, 32), (32, 448))
 
-border_top_x, border_top_y = (
-    0,
-    0,
-)
-border_top = pygame.Rect((border_top_x, border_top_y), (608, 32))
-
-border_right_x, border_right_y = (
-    608,
-    0,
-)
-border_right = pygame.Rect((border_right_x, border_right_y), (32, 448))
-
-border_bottom_x, border_bottom_y = (
-    32,
-    448,
-)
-border_bottom = pygame.Rect((border_bottom_x, border_bottom_y), (608, 32))
-
-border_left_x, border_left_y = (
-    0,
-    32,
-)
-border_left = pygame.Rect((border_left_x, border_left_y), (32, 448))
-
+border_list = [border_top, border_right, border_bottom, border_left]
 
 player_x, player_y = (
     320,
@@ -47,8 +28,23 @@ player_x, player_y = (
 )
 player = pygame.Rect((player_x, player_y), (32, 32))
 
+apple_x, apple_y = (
+    64,
+    64,
+)
+apple = pygame.Rect((apple_x, apple_y), (32, 32))
+
+
 def move(increment_x, increment_y):
     return player.move(increment_x, increment_y)
+
+
+movement_keys = {
+    "up": partial(move, 0, -32),
+    "down": partial(move, 0, 32),
+    "left": partial(move, -32, 0),
+    "right": partial(move, 32, 0),
+}
 
 
 def is_opposite_direction(direction, new_direction):
@@ -61,21 +57,35 @@ def is_opposite_direction(direction, new_direction):
         return True
 
 
+def draw_border(screen, FOREGROUND, border_list):
+    for border in border_list:
+        pygame.draw.rect(screen, FOREGROUND, border)
+
+
+def border_collision(player, border_list):
+    for border in border_list:
+        if player.colliderect(border):
+            return True
+
+
+def apple_collision(player, apple):
+    if player.colliderect(apple):
+        return 1
+    else:
+        return 0
+
+
 direction = "right"
 new_direction = ""
+snake_length = 1
 
 while running:
     screen.fill(BACKGROUND)
-    pygame.draw.rect(screen, FOREGROUND, border_top)
-    pygame.draw.rect(screen, FOREGROUND, border_right)
-    pygame.draw.rect(screen, FOREGROUND, border_bottom)
-    pygame.draw.rect(screen, FOREGROUND, border_left)
-    movement_keys = {
-        "up": partial(move, 0, -32),
-        "down": partial(move, 0, 32),
-        "left": partial(move, -32, 0),
-        "right": partial(move, 32, 0),
-    }
+
+    draw_border(screen, FOREGROUND, border_list)
+
+    pygame.draw.rect(screen, FOREGROUND, apple)
+
     for event in pygame.event.get():
         if event.type != pygame.KEYDOWN:
             continue
@@ -88,6 +98,12 @@ while running:
             direction = new_direction
     player = movement_keys[direction]()
     pygame.draw.rect(screen, FOREGROUND, player)
+
+    if border_collision(player, border_list):
+        running = False
+
+    snake_length += apple_collision(player, apple)
+
     pygame.display.flip()
     clock.tick(MAX_FPS)
 
