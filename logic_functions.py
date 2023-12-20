@@ -2,6 +2,9 @@ from string import ascii_uppercase
 from random import choice
 from functools import partial
 
+snake_length = 3
+
+
 def calculate_grid():
     grid_coordinate = {}
     GRID_WIDTH = 20
@@ -57,5 +60,3 @@ movement_keys = {
     "left": partial(move, -32, 0),
     "right": partial(move, 32, 0),
 }
-
-
