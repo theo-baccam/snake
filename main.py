@@ -12,7 +12,7 @@ SCREEN_HEIGHT = 480
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 clock = pygame.time.Clock()
-MAX_FPS = 3
+MAX_FPS = 5
 running = True
 
 border_top = pygame.Rect(lf.grid_coordinate["A1"], (608, 32))
@@ -53,7 +53,6 @@ while running:
 
     if cf.body_collision(snake_cell_positions):
         running = False
-        break
 
     if cf.apple_collision(snake_head, apple):
         lf.snake_length += 1
@@ -63,8 +62,12 @@ while running:
 
     if cf.border_collision(snake_head, border_list):
         running = False
-        break
 
+    if not running:
+        rf.draw_game_over(screen)
+        pygame.display.update()
+        pygame.time.delay(1800)
+        break
     rf.draw_background(screen)
     rf.draw_border(screen, border_list)
     rf.draw_apple(screen, apple)

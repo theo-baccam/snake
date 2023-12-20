@@ -46,3 +46,18 @@ def draw_score(screen):
         SCORE_SURFACE,
         (lf.grid_coordinate["A1"][0] + 3, lf.grid_coordinate["A1"][1] + 3),
     )
+
+def draw_game_over(screen):
+    GAME_OVER_SURFACE = FONT.render(f"GAME OVER", True, BORDER_COLOR)
+    GAME_OVER_MIDDLE = GAME_OVER_SURFACE.get_width() / 2
+    screen.blit(
+        GAME_OVER_SURFACE,
+        (lf.grid_coordinate["G11"][0] + 3 - GAME_OVER_MIDDLE, lf.grid_coordinate["G11"][1] + 3)
+    )
+
+    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - 3}", True, BORDER_COLOR)
+    SCORE_MIDDLE = SCORE_SURFACE.get_width() / 2
+    screen.blit(
+        SCORE_SURFACE,
+        (lf.grid_coordinate["H11"][0] + 3 - SCORE_MIDDLE, lf.grid_coordinate["H11"][1] + 3)
+    )
