@@ -66,8 +66,7 @@ while running:
     if not running:
         rf.draw_game_over(screen)
         pygame.display.update()
-        pygame.time.delay(1800)
-        break
+        pygame.time.delay(3600)
     rf.draw_background(screen)
     rf.draw_border(screen, border_list)
     rf.draw_apple(screen, apple)
