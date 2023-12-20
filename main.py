@@ -120,6 +120,7 @@ apple_x, apple_y = random_coordinate
 apple = pygame.Rect((apple_x, apple_y), (32, 32))
 
 while running:
+    buffered_direction = direction
     for event in pygame.event.get():
         if event.type != pygame.KEYDOWN:
             continue
@@ -128,7 +129,7 @@ while running:
         key_name = pygame.key.name(event.key)
         if key_name in movement_keys:
             new_direction = key_name
-        if not is_opposite_direction(direction, new_direction):
+        if not is_opposite_direction(buffered_direction, new_direction):
             direction = new_direction
 
     snake_head = movement_keys[direction]()
@@ -154,6 +155,5 @@ while running:
 
     pygame.display.flip()
     clock.tick(MAX_FPS)
-
 
 pygame.quit()
