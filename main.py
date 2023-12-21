@@ -6,6 +6,7 @@ import pygame
 import logic_functions as lf
 import render_functions as rf
 import collide_functions as cf
+import sound_functions as sf
 
 pygame.init()
 SCREEN_WIDTH = 640
@@ -56,6 +57,7 @@ while running and playing:
 
     snake_head = lf.movement_keys[direction](snake_head)
     lf.calculate_snake_cell_positions(snake_cell_positions, lf.snake_length, snake_head)
+    sf.play_hh_closed()
 
     if cf.body_collision(snake_cell_positions):
         playing = False
@@ -65,6 +67,7 @@ while running and playing:
         apple[0], apple[1] = lf.choose_random_coordinate(
             lf.grid_coordinate, snake_cell_positions
         )
+        sf.play_hh_open()
 
     if cf.border_collision(snake_head, border_list):
         playing = False
@@ -87,4 +90,5 @@ while running and playing:
     rf.draw_score(screen)
 
     pygame.display.flip()
+
     clock.tick(MAX_FPS)
