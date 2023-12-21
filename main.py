@@ -14,6 +14,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 MAX_FPS = 5
 running = True
+playing = True
 
 border_top = pygame.Rect(lf.grid_coordinate["A1"], (608, 32))
 border_right = pygame.Rect(lf.grid_coordinate["A20"], (32, 448))
@@ -35,13 +36,17 @@ random_coordinate = lf.choose_random_coordinate(
 apple_x, apple_y = random_coordinate
 apple = pygame.Rect((apple_x, apple_y), (32, 32))
 
-while running:
+while running and playing:
     buffered_direction = direction
     for event in pygame.event.get():
+        if event.type == pygame.quit:
+            running = False
+            break
         if event.type != pygame.KEYDOWN:
             continue
         if event.key == pygame.K_ESCAPE:
             running = False
+            break
         key_name = pygame.key.name(event.key)
         if key_name in lf.movement_keys:
             new_direction = key_name
@@ -52,7 +57,7 @@ while running:
     lf.calculate_snake_cell_positions(snake_cell_positions, lf.snake_length, snake_head)
 
     if cf.body_collision(snake_cell_positions):
-        running = False
+        playing = False
 
     if cf.apple_collision(snake_head, apple):
         lf.snake_length += 1
@@ -61,9 +66,12 @@ while running:
         )
 
     if cf.border_collision(snake_head, border_list):
-        running = False
-
+        playing = False
+    
     if not running:
+        break
+
+    if not playing:
         rf.draw_game_over(screen)
         pygame.display.update()
         pygame.time.delay(3600)
