@@ -1,3 +1,4 @@
+import sys
 import os
 
 import pygame
@@ -69,12 +70,16 @@ while running and playing:
         playing = False
     
     if not running:
+        pygame.quit()
+        sys.exit()
         break
 
     if not playing:
         rf.draw_game_over(screen)
         pygame.display.update()
         pygame.time.delay(3600)
+        pygame.quit()
+        sys.exit()
     rf.draw_background(screen)
     rf.draw_border(screen, border_list)
     rf.draw_apple(screen, apple)
@@ -83,5 +88,3 @@ while running and playing:
 
     pygame.display.flip()
     clock.tick(MAX_FPS)
-
-pygame.quit()
