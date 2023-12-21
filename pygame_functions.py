@@ -11,8 +11,10 @@ MAX_FPS = 5
 running = True
 playing = True
 
+
 def pygame_init():
     pygame.init()
+
 
 def pygame_quit():
     pygame.quit()

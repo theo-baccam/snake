@@ -40,23 +40,18 @@ def draw_apple(screen, apple):
 
 def draw_score(screen, score, xy_position):
     SCORE_SURFACE = FONT.render(f"SCORE: {score}", True, BACKGROUND_COLOR)
-    screen.blit(
-        SCORE_SURFACE,
-        (xy_position[0] + 3, xy_position[1] + 3)
-    )
+    screen.blit(SCORE_SURFACE, (xy_position[0] + 3, xy_position[1] + 3))
+
 
 def draw_game_over_text(screen, xy_position):
     GAME_OVER_SURFACE = FONT.render(f"GAME OVER", True, BORDER_COLOR)
     GAME_OVER_MIDDLE = GAME_OVER_SURFACE.get_width() / 2
     screen.blit(
-        GAME_OVER_SURFACE,
-        (xy_position[0] - GAME_OVER_MIDDLE + 3, xy_position[1] + 3)
+        GAME_OVER_SURFACE, (xy_position[0] - GAME_OVER_MIDDLE + 3, xy_position[1] + 3)
     )
+
 
 def draw_game_over_score(screen, score, xy_position):
     score_surface = FONT.render(f"SCORE: {score}", True, BORDER_COLOR)
     score_middle = score_surface.get_width() / 2
-    screen.blit(
-        score_surface,
-        (xy_position[0] - score_middle + 3, xy_position[1] + 3)
-    )
+    screen.blit(score_surface, (xy_position[0] - score_middle + 3, xy_position[1] + 3))

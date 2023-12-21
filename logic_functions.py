@@ -9,6 +9,7 @@ score = snake_length - INITIAL_SNAKE_LENGTH
 direction = "right"
 new_direction = ""
 
+
 def calculate_grid():
     grid_coordinate = {}
     GRID_WIDTH = 20
