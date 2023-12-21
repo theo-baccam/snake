@@ -40,7 +40,7 @@ apple = pygame.Rect((apple_x, apple_y), (32, 32))
 while running and playing:
     buffered_direction = direction
     for event in pygame.event.get():
-        if event.type == pygame.quit:
+        if event.type == pygame.QUIT:
             running = False
             break
         if event.type != pygame.KEYDOWN:
