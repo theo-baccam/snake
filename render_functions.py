@@ -41,7 +41,7 @@ def draw_apple(screen, apple):
 
 
 def draw_score(screen):
-    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - 3}", True, BACKGROUND_COLOR)
+    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - lf.INITIAL_SNAKE_LENGTH}", True, BACKGROUND_COLOR)
     screen.blit(
         SCORE_SURFACE,
         (lf.grid_coordinate["A1"][0] + 3, lf.grid_coordinate["A1"][1] + 3),
@@ -55,7 +55,7 @@ def draw_game_over(screen):
         (lf.grid_coordinate["G11"][0] + 3 - GAME_OVER_MIDDLE, lf.grid_coordinate["G11"][1] + 3)
     )
 
-    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - 3}", True, BORDER_COLOR)
+    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - lf.INITIAL_SNAKE_LENGTH}", True, BORDER_COLOR)
     SCORE_MIDDLE = SCORE_SURFACE.get_width() / 2
     screen.blit(
         SCORE_SURFACE,

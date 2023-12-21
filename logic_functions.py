@@ -2,7 +2,8 @@ from string import ascii_uppercase
 from random import choice
 from functools import partial
 
-snake_length = 3
+INITIAL_SNAKE_LENGTH = 4
+snake_length = INITIAL_SNAKE_LENGTH
 
 
 def calculate_grid():
