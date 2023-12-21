@@ -3,32 +3,23 @@ import os
 
 import pygame
 
+import pygame_functions as pf
 import object_coordinates as oc
 import logic_functions as lf
 import render_functions as rf
 import collide_functions as cf
 import sound_functions as sf
 
-pygame.init()
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-clock = pygame.time.Clock()
-MAX_FPS = 5
-running = True
-playing = True
-
-while running and playing:
+while pf.running and pf.playing:
     buffered_direction = lf.direction
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            pf.running = False
             break
         if event.type != pygame.KEYDOWN:
             continue
         if event.key == pygame.K_ESCAPE:
-            running = False
+            pf.running = False
             break
         key_name = pygame.key.name(event.key)
         if key_name in lf.movement_keys:
@@ -41,7 +32,7 @@ while running and playing:
     sf.play_hh_closed()
 
     if cf.body_collision(oc.snake_cell_positions):
-        playing = False
+        pf.playing = False
 
     if cf.apple_collision(oc.snake_head, oc.apple):
         lf.snake_length += 1
@@ -51,25 +42,23 @@ while running and playing:
         sf.play_hh_open()
 
     if cf.border_collision(oc.snake_head, oc.border_list):
-        playing = False
+        pf.playing = False
     
-    if not running:
-        pygame.quit()
-        sys.exit()
+    if not pf.running:
+        pf.pygame_quit()
         break
 
-    if not playing:
-        rf.draw_game_over(screen)
+    if not pf.playing:
+        rf.draw_game_over(pf.screen)
         pygame.display.update()
         pygame.time.delay(3600)
-        pygame.quit()
-        sys.exit()
-    rf.draw_background(screen)
-    rf.draw_border(screen, oc.border_list)
-    rf.draw_apple(screen, oc.apple)
-    rf.render_snake(oc.snake_cell_positions, screen)
-    rf.draw_score(screen)
+        pf.pygame_quit()
+    rf.draw_background(pf.screen)
+    rf.draw_border(pf.screen, oc.border_list)
+    rf.draw_apple(pf.screen, oc.apple)
+    rf.render_snake(oc.snake_cell_positions, pf.screen)
+    rf.draw_score(pf.screen)
 
     pygame.display.flip()
 
-    clock.tick(MAX_FPS)
+    pf.clock.tick(pf.MAX_FPS)
