@@ -3,6 +3,7 @@ import os
 
 import pygame
 
+import object_coordinates as oc
 import logic_functions as lf
 import render_functions as rf
 import collide_functions as cf
@@ -18,28 +19,8 @@ MAX_FPS = 5
 running = True
 playing = True
 
-border_top = pygame.Rect(lf.grid_coordinate["A1"], (608, 32))
-border_right = pygame.Rect(lf.grid_coordinate["A20"], (32, 448))
-border_bottom = pygame.Rect(lf.grid_coordinate["O2"], (608, 32))
-border_left = pygame.Rect(lf.grid_coordinate["B1"], (32, 448))
-border_list = [border_top, border_right, border_bottom, border_left]
-
-snake_head_x, snake_head_y = lf.grid_coordinate["H11"]
-snake_head = pygame.Rect((snake_head_x, snake_head_y), (32, 32))
-
-
-direction = "right"
-new_direction = ""
-snake_cell_positions = []
-
-random_coordinate = lf.choose_random_coordinate(
-    lf.grid_coordinate, snake_cell_positions
-)
-apple_x, apple_y = random_coordinate
-apple = pygame.Rect((apple_x, apple_y), (32, 32))
-
 while running and playing:
-    buffered_direction = direction
+    buffered_direction = lf.direction
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -51,25 +32,25 @@ while running and playing:
             break
         key_name = pygame.key.name(event.key)
         if key_name in lf.movement_keys:
-            new_direction = key_name
-        if not lf.is_opposite_direction(buffered_direction, new_direction):
-            direction = new_direction
+            lf.new_direction = key_name
+        if not lf.is_opposite_direction(buffered_direction):
+            lf.direction = lf.new_direction
 
-    snake_head = lf.movement_keys[direction](snake_head)
-    lf.calculate_snake_cell_positions(snake_cell_positions, lf.snake_length, snake_head)
+    oc.snake_head = lf.movement_keys[lf.direction](oc.snake_head)
+    lf.calculate_snake_cell_positions(oc.snake_cell_positions, lf.snake_length, oc.snake_head)
     sf.play_hh_closed()
 
-    if cf.body_collision(snake_cell_positions):
+    if cf.body_collision(oc.snake_cell_positions):
         playing = False
 
-    if cf.apple_collision(snake_head, apple):
+    if cf.apple_collision(oc.snake_head, oc.apple):
         lf.snake_length += 1
-        apple[0], apple[1] = lf.choose_random_coordinate(
-            lf.grid_coordinate, snake_cell_positions
+        oc.apple[0], oc.apple[1] = lf.choose_random_coordinate(
+            lf.grid_coordinate, oc.snake_cell_positions
         )
         sf.play_hh_open()
 
-    if cf.border_collision(snake_head, border_list):
+    if cf.border_collision(oc.snake_head, oc.border_list):
         playing = False
     
     if not running:
@@ -84,9 +65,9 @@ while running and playing:
         pygame.quit()
         sys.exit()
     rf.draw_background(screen)
-    rf.draw_border(screen, border_list)
-    rf.draw_apple(screen, apple)
-    rf.render_snake(snake_cell_positions, screen)
+    rf.draw_border(screen, oc.border_list)
+    rf.draw_apple(screen, oc.apple)
+    rf.render_snake(oc.snake_cell_positions, screen)
     rf.draw_score(screen)
 
     pygame.display.flip()

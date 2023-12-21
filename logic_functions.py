@@ -5,6 +5,8 @@ from functools import partial
 INITIAL_SNAKE_LENGTH = 4
 snake_length = INITIAL_SNAKE_LENGTH
 
+direction = "right"
+new_direction = ""
 
 def calculate_grid():
     grid_coordinate = {}
@@ -36,7 +38,7 @@ def move(increment_x, increment_y, snake_head):
     return snake_head.move(increment_x, increment_y)
 
 
-def is_opposite_direction(direction, new_direction):
+def is_opposite_direction(direction):
     if (
         (direction == "up" and new_direction == "down")
         or (direction == "down" and new_direction == "up")
