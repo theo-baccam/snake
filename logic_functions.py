@@ -4,6 +4,7 @@ from functools import partial
 
 INITIAL_SNAKE_LENGTH = 4
 snake_length = INITIAL_SNAKE_LENGTH
+score = snake_length - INITIAL_SNAKE_LENGTH
 
 direction = "right"
 new_direction = ""

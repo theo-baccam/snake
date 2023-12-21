@@ -36,6 +36,7 @@ while pf.running and pf.playing:
 
     if cf.apple_collision(oc.snake_head, oc.apple):
         lf.snake_length += 1
+        lf.score += 1
         oc.apple[0], oc.apple[1] = lf.choose_random_coordinate(
             lf.grid_coordinate, oc.snake_cell_positions
         )
@@ -49,7 +50,8 @@ while pf.running and pf.playing:
         break
 
     if not pf.playing:
-        rf.draw_game_over(pf.screen)
+        rf.draw_game_over_text(pf.screen, lf.grid_coordinate["G11"])
+        rf.draw_game_over_score(pf.screen, lf.score, lf.grid_coordinate["H11"])
         pygame.display.update()
         pygame.time.delay(3600)
         pf.pygame_quit()
@@ -57,7 +59,7 @@ while pf.running and pf.playing:
     rf.draw_border(pf.screen, oc.border_list)
     rf.draw_apple(pf.screen, oc.apple)
     rf.render_snake(oc.snake_cell_positions, pf.screen)
-    rf.draw_score(pf.screen)
+    rf.draw_score( pf.screen, lf.score, lf.grid_coordinate["A1"])
 
     pygame.display.flip()
 

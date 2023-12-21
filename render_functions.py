@@ -2,8 +2,6 @@ import os
 
 import pygame
 
-import logic_functions as lf
-
 BORDER_COLOR = (57, 43, 53)
 APPLE_COLOR = (187, 71, 79)
 SNAKE_BODY_COLOR = (72, 107, 127)
@@ -40,24 +38,25 @@ def draw_apple(screen, apple):
     pygame.draw.rect(screen, APPLE_COLOR, apple)
 
 
-def draw_score(screen):
-    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - lf.INITIAL_SNAKE_LENGTH}", True, BACKGROUND_COLOR)
+def draw_score(screen, score, xy_position):
+    SCORE_SURFACE = FONT.render(f"SCORE: {score}", True, BACKGROUND_COLOR)
     screen.blit(
         SCORE_SURFACE,
-        (lf.grid_coordinate["A1"][0] + 3, lf.grid_coordinate["A1"][1] + 3),
+        (xy_position[0] + 3, xy_position[1] + 3)
     )
 
-def draw_game_over(screen):
+def draw_game_over_text(screen, xy_position):
     GAME_OVER_SURFACE = FONT.render(f"GAME OVER", True, BORDER_COLOR)
     GAME_OVER_MIDDLE = GAME_OVER_SURFACE.get_width() / 2
     screen.blit(
         GAME_OVER_SURFACE,
-        (lf.grid_coordinate["G11"][0] + 3 - GAME_OVER_MIDDLE, lf.grid_coordinate["G11"][1] + 3)
+        (xy_position[0] - GAME_OVER_MIDDLE + 3, xy_position[1] + 3)
     )
 
-    SCORE_SURFACE = FONT.render(f"SCORE: {lf.snake_length - lf.INITIAL_SNAKE_LENGTH}", True, BORDER_COLOR)
-    SCORE_MIDDLE = SCORE_SURFACE.get_width() / 2
+def draw_game_over_score(screen, score, xy_position):
+    score_surface = FONT.render(f"SCORE: {score}", True, BORDER_COLOR)
+    score_middle = score_surface.get_width() / 2
     screen.blit(
-        SCORE_SURFACE,
-        (lf.grid_coordinate["H11"][0] + 3 - SCORE_MIDDLE, lf.grid_coordinate["H11"][1] + 3)
+        score_surface,
+        (xy_position[0] - score_middle + 3, xy_position[1] + 3)
     )
