@@ -2,6 +2,8 @@ import os
 
 import pygame
 
+from file_functions import font_path
+
 BORDER_COLOR = (57, 43, 53)
 APPLE_COLOR = (187, 71, 79)
 SNAKE_BODY_COLOR = (72, 107, 127)
@@ -9,9 +11,6 @@ SNAKE_HEAD_COLOR = (122, 156, 150)
 BACKGROUND_COLOR = (209, 191, 176)
 
 pygame.font.init()
-
-snake_directory = os.path.dirname(os.path.abspath(__file__))
-font_path = os.path.join(snake_directory, "Pixolletta8px.ttf")
 
 FONT_SIZE = 32
 FONT = pygame.font.Font(font_path, FONT_SIZE)
@@ -41,6 +40,12 @@ def draw_apple(screen, apple):
 def draw_score(screen, score, xy_position):
     SCORE_SURFACE = FONT.render(f"SCORE: {score}", True, BACKGROUND_COLOR)
     screen.blit(SCORE_SURFACE, (xy_position[0] + 3, xy_position[1] + 3))
+
+
+def draw_high_score(screen, high_score, xy_position):
+    SCORE_SURFACE = FONT.render(f"HI-SCORE: {high_score}", True, BACKGROUND_COLOR)
+    SCORE_WIDTH = SCORE_SURFACE.get_width()
+    screen.blit(SCORE_SURFACE, (xy_position[0] + 32 - SCORE_WIDTH, xy_position[1] + 3))
 
 
 def draw_game_over_text(screen, xy_position):

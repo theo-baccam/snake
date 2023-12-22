@@ -1,6 +1,7 @@
 import pygame
 
 import pygame_functions as pf
+import file_functions as ff
 import object_coordinates as oc
 import logic_functions as lf
 import render_functions as rf
@@ -54,6 +55,7 @@ while pf.running and pf.playing:
     if not pf.playing:
         rf.draw_game_over_text(pf.screen, lf.grid_coordinate["G11"])
         rf.draw_game_over_score(pf.screen, lf.score, lf.grid_coordinate["H11"])
+        ff.new_high_score(lf.score)
         pygame.display.update()
         pygame.time.delay(3600)
         pf.pygame_quit()
@@ -62,6 +64,7 @@ while pf.running and pf.playing:
     rf.draw_border(pf.screen, oc.border_list)
     rf.draw_apple(pf.screen, oc.apple)
     rf.render_snake(oc.snake_cell_positions, pf.screen)
+    rf.draw_high_score(pf.screen, ff.high_score, lf.grid_coordinate["A20"])
     rf.draw_score(pf.screen, lf.score, lf.grid_coordinate["A1"])
 
     pygame.display.flip()

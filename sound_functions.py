@@ -2,15 +2,13 @@ import os
 
 import pygame
 
-from render_functions import snake_directory
+from file_functions import hh_closed_path, hh_open_path
 
 
 pygame.mixer.init()
 
-hh_closed_path = os.path.join(snake_directory, "hi-hat-closed.mp3")
 hh_closed = pygame.mixer.Sound(hh_closed_path)
 
-hh_open_path = os.path.join(snake_directory, "hi-hat-open.mp3")
 hh_open = pygame.mixer.Sound(hh_open_path)
 
 
