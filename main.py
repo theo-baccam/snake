@@ -23,14 +23,14 @@ while pf.running and pf.playing:
         if key_name in lf.movement_keys:
             lf.new_direction = key_name
 
-        if not lf.is_opposite_direction(buffered_direction):
+        if not lf.is_opposite_direction(buffered_direction, lf.new_direction):
             lf.direction = lf.new_direction
 
     oc.snake_head = lf.movement_keys[lf.direction](oc.snake_head)
 
-    lf.calculate_snake_cell_positions(
-        oc.snake_cell_positions, lf.snake_length, oc.snake_head
-    )
+    lf.calculate_snake_cell_positions(oc.snake_cell_positions, oc.snake_head)
+    lf.calculate_snake_cell_directions(oc.snake_head)
+    lf.calculate_snake_cell_turning(oc.snake_head)
 
     sf.play_hh_closed()
 
@@ -50,9 +50,12 @@ while pf.running and pf.playing:
 
     if not pf.running:
         pf.pygame_quit()
+        ff.new_high_score(lf.score)
         break
 
     if not pf.playing:
+        print(lf.snake_cell_directions)
+        print(lf.snake_cell_turning)
         rf.draw_game_over_text(pf.screen, lf.grid_coordinate["G11"])
         rf.draw_game_over_score(pf.screen, lf.score, lf.grid_coordinate["H11"])
         ff.new_high_score(lf.score)

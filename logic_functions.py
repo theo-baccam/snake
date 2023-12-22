@@ -9,6 +9,9 @@ score = snake_length - INITIAL_SNAKE_LENGTH
 direction = "right"
 new_direction = ""
 
+snake_cell_directions = []
+snake_cell_turning = []
+
 
 def calculate_grid():
     grid_coordinate = {}
@@ -40,7 +43,7 @@ def move(increment_x, increment_y, snake_head):
     return snake_head.move(increment_x, increment_y)
 
 
-def is_opposite_direction(direction):
+def is_opposite_direction(direction, new_direction):
     if (
         (direction == "up" and new_direction == "down")
         or (direction == "down" and new_direction == "up")
@@ -50,10 +53,33 @@ def is_opposite_direction(direction):
         return True
 
 
-def calculate_snake_cell_positions(snake_cell_positions, snake_length, snake_head):
+def calculate_snake_cell_positions(snake_cell_positions, snake_head):
     if len(snake_cell_positions) == snake_length:
         snake_cell_positions.pop(0)
     snake_cell_positions.append((snake_head[0], snake_head[1]))
+
+
+def calculate_snake_cell_directions(snake_head):
+    if len(snake_cell_directions) == snake_length:
+        snake_cell_directions.pop(0)
+    snake_cell_directions.append(direction)
+
+
+def calculate_snake_cell_turning(snake_head):
+    if len(snake_cell_directions) < 3:
+        return
+    snake_cell_turning.clear()
+    is_turning = False
+    snake_cell_turning.append(is_turning)
+    for index, direction in enumerate(snake_cell_directions[1:-1]):
+        if direction == snake_cell_directions[index + 2]:
+            is_turning = False
+            snake_cell_turning.append(is_turning)
+        else:
+            is_turning = True
+            snake_cell_turning.append(is_turning)
+    is_turning = False
+    snake_cell_turning.append(is_turning)
 
 
 grid_coordinate = calculate_grid()
