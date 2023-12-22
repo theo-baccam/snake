@@ -7,9 +7,9 @@ SCREEN_HEIGHT = 480
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 clock = pygame.time.Clock()
-MAX_FPS = 5
+MAX_FPS = 0.5
 running = True
-playing = True
+playing = False
 
 
 def pygame_init():

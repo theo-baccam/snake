@@ -10,6 +10,8 @@ font_path = os.path.join(snake_directory, "Pixolletta8px.ttf")
 hh_closed_path = os.path.join(snake_directory, "hi-hat-closed.mp3")
 hh_open_path = os.path.join(snake_directory, "hi-hat-open.mp3")
 
+sprite_path = os.path.join(snake_directory, "sprites")
+
 
 def file_create():
     with open(high_score_path, "w") as file:

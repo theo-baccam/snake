@@ -6,7 +6,7 @@ INITIAL_SNAKE_LENGTH = 4
 snake_length = INITIAL_SNAKE_LENGTH
 score = snake_length - INITIAL_SNAKE_LENGTH
 
-direction = "right"
+direction = ""
 new_direction = ""
 
 snake_cell_directions = []
@@ -69,18 +69,19 @@ def calculate_snake_cell_turning(snake_head):
     if len(snake_cell_directions) < 3:
         return
     snake_cell_turning.clear()
-    is_turning = False
-    snake_cell_turning.append(is_turning)
-    for index, direction in enumerate(snake_cell_directions[1:-1]):
-        if direction == snake_cell_directions[index + 2]:
-            is_turning = False
-            snake_cell_turning.append(is_turning)
-        else:
-            is_turning = True
-            snake_cell_turning.append(is_turning)
-    is_turning = False
-    snake_cell_turning.append(is_turning)
 
+    for index, direction in enumerate(snake_cell_directions):
+        if index == 0 or direction == snake_cell_directions[-1]:
+            turn = (False, f"{direction} {direction}")
+            snake_cell_turning.append(turn)
+            continue
+
+        if direction == snake_cell_directions[index + 1]:
+            turn = (False, f"{direction} {snake_cell_directions[index + 1]}")
+            snake_cell_turning.append(turn)
+        else:
+            turn = (True, f"{direction} {snake_cell_directions[index + 1]}")
+            snake_cell_turning.append(turn)
 
 grid_coordinate = calculate_grid()
 

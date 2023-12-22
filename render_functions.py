@@ -1,8 +1,9 @@
 import os
+from functools import partial
 
 import pygame
 
-from file_functions import font_path
+from file_functions import font_path, sprite_path
 
 BORDER_COLOR = (57, 43, 53)
 APPLE_COLOR = (187, 71, 79)
@@ -25,12 +26,51 @@ def draw_border(screen, border_list):
         pygame.draw.rect(screen, BORDER_COLOR, border)
 
 
-def render_snake(snake_cell_positions, screen):
-    for i in snake_cell_positions[:-1]:
-        snake_cell = pygame.Rect((i), (32, 32))
-        pygame.draw.rect(screen, SNAKE_BODY_COLOR, snake_cell)
-    head = pygame.Rect((snake_cell_positions[-1]), (32, 32))
-    pygame.draw.rect(screen, SNAKE_HEAD_COLOR, head)
+def rotate_image(angle, image, position, screen):
+    rotated = pygame.transform.rotate(image, angle)
+    screen.blit(rotated, position)
+
+
+rotation_dict = {
+    "up up": partial(rotate_image, 0),
+    "left left": partial(rotate_image, 90),
+    "down down": partial(rotate_image, 180),
+    "right right": partial(rotate_image, 270),
+
+    "up left": partial(rotate_image, 0),
+    "left down": partial(rotate_image, 90),
+    "down right": partial(rotate_image, 180),
+    "right up": partial(rotate_image, 270),
+
+    "right down": partial(rotate_image, 0),
+    "up right": partial(rotate_image, 90),
+    "left up": partial(rotate_image, 180),
+    "down left": partial(rotate_image, 270),
+}
+
+
+def render_snake(snake_cell_positions, snake_cell_turning, screen):
+    tail = pygame.image.load(os.path.join(sprite_path, "snake-tail.png"))
+    screen.blit(tail, snake_cell_positions[0])
+
+    body_straight = pygame.image.load(
+        os.path.join(sprite_path, "snake-body-straight.png")
+    )
+    body_turning = pygame.image.load(
+        os.path.join(sprite_path, "snake-body-turning.png")
+    )
+    for index, value in enumerate(snake_cell_positions[1:-1]):
+        if not snake_cell_turning[1:-1][index][0]:
+            rotation_dict[snake_cell_turning[1:-1][index][1]](
+                body_straight, value, screen
+            )
+        else:
+            rotation_dict[snake_cell_turning[1:-1][index][1]](
+                body_turning, value, screen
+            )
+
+    head = pygame.image.load(os.path.join(sprite_path, "snake-head.png"))
+    screen.blit(head, snake_cell_positions[-1])
 
 
 def draw_apple(screen, apple):
