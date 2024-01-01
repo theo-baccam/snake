@@ -1,3 +1,5 @@
+# Fonction pour gérer les collisions avec les bords, la pomme et le corps
+# du serpent
 def border_collision(snake_head, border_list):
     for border in border_list:
         if snake_head.colliderect(border):

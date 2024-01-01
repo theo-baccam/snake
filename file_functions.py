@@ -1,6 +1,7 @@
 import string
 import os
 
+# Chemin vers répertoire et fichiers
 snake_directory = os.path.dirname(os.path.abspath(__file__))
 
 high_score_path = os.path.join(snake_directory, "high_score.txt")
@@ -11,6 +12,7 @@ hh_closed_path = os.path.join(snake_directory, "hi-hat-closed.mp3")
 hh_open_path = os.path.join(snake_directory, "hi-hat-open.mp3")
 
 
+# Fonction pour créer le fichier high score
 def file_create():
     with open(high_score_path, "w") as file:
         DEFAULT_STRING = "0"
@@ -18,6 +20,7 @@ def file_create():
         return DEFAULT_STRING
 
 
+# Fonction pour charger le fichier et lire
 def file_load():
     file_content = ""
     if not os.path.exists(high_score_path):
@@ -33,6 +36,7 @@ def file_load():
 high_score = file_load()
 
 
+# Fonction pour mettre un nouveau high score
 def new_high_score(score):
     if score > int(high_score):
         with open(high_score_path, "w") as file:

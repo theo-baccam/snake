@@ -2,17 +2,21 @@ import pygame
 
 import logic_functions as lf
 
+# liste pour position et tailles des murs
 border_top = pygame.Rect(lf.grid_coordinate["A1"], (608, 32))
 border_right = pygame.Rect(lf.grid_coordinate["A20"], (32, 448))
 border_bottom = pygame.Rect(lf.grid_coordinate["O2"], (608, 32))
 border_left = pygame.Rect(lf.grid_coordinate["B1"], (32, 448))
 border_list = [border_top, border_right, border_bottom, border_left]
 
+# Tête du serpent
 snake_head_x, snake_head_y = lf.grid_coordinate["H11"]
 snake_head = pygame.Rect((snake_head_x, snake_head_y), (32, 32))
 
+# Positions des cellules du corps du serpent
 snake_cell_positions = []
 
+# Pomme
 random_coordinate = lf.choose_random_coordinate(
     lf.grid_coordinate, snake_cell_positions
 )

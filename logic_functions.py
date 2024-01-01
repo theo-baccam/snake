@@ -2,6 +2,8 @@ from string import ascii_uppercase
 from random import choice
 from functools import partial
 
+# La longueur initiale du serpent est 4 car c'est la longueur maximale
+# que le serpent peut avoir sans pouvoir faire collision avec son propre corps
 INITIAL_SNAKE_LENGTH = 4
 snake_length = INITIAL_SNAKE_LENGTH
 score = snake_length - INITIAL_SNAKE_LENGTH
@@ -9,10 +11,9 @@ score = snake_length - INITIAL_SNAKE_LENGTH
 direction = "right"
 new_direction = ""
 
-snake_cell_directions = []
-snake_cell_turning = []
 
-
+# Fonction qui divise l'écran en grille, et qui attribue à chaque grille
+# un nom et une valeur
 def calculate_grid():
     grid_coordinate = {}
     GRID_WIDTH = 20
@@ -24,9 +25,12 @@ def calculate_grid():
     return grid_coordinate
 
 
+# Fonction pour choisir une position aléatoirement pour la pomme
 def choose_random_coordinate(grid_coordinate, snake_cell_positions):
     while True:
         random_coordinate = choice(list(grid_coordinate.values()))
+        # Pour que la pomme n'apparaît pas dans un mur ou dans le corps
+        # du serpent.
         if (
             (random_coordinate[0] == 0)
             or (random_coordinate[0] == 608)
@@ -39,10 +43,13 @@ def choose_random_coordinate(grid_coordinate, snake_cell_positions):
         return random_coordinate
 
 
+# Pour déplacer la tête du serpent
 def move(increment_x, increment_y, snake_head):
     return snake_head.move(increment_x, increment_y)
 
 
+# Pour vérifier si le joueur ne va pas dans la direction opposé,
+# permet d'empêcher auto collision
 def is_opposite_direction(direction, new_direction):
     if (
         (direction == "up" and new_direction == "down")
@@ -53,33 +60,11 @@ def is_opposite_direction(direction, new_direction):
         return True
 
 
+# Pour calculer la position des cellules du corps du serpent
 def calculate_snake_cell_positions(snake_cell_positions, snake_head):
     if len(snake_cell_positions) == snake_length:
         snake_cell_positions.pop(0)
     snake_cell_positions.append((snake_head[0], snake_head[1]))
-
-
-def calculate_snake_cell_directions(snake_head):
-    if len(snake_cell_directions) == snake_length:
-        snake_cell_directions.pop(0)
-    snake_cell_directions.append(direction)
-
-
-def calculate_snake_cell_turning(snake_head):
-    if len(snake_cell_directions) < 3:
-        return
-    snake_cell_turning.clear()
-    is_turning = False
-    snake_cell_turning.append(is_turning)
-    for index, direction in enumerate(snake_cell_directions[1:-1]):
-        if direction == snake_cell_directions[index + 2]:
-            is_turning = False
-            snake_cell_turning.append(is_turning)
-        else:
-            is_turning = True
-            snake_cell_turning.append(is_turning)
-    is_turning = False
-    snake_cell_turning.append(is_turning)
 
 
 grid_coordinate = calculate_grid()
